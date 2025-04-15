@@ -3,7 +3,11 @@
 char PARTICLES[] = {'.', '`', '\'', '*', '+', '\"', ',', ';', ':'};
 
 
-
+/**
+ * Initializes the NCurses & modify certain features of terminal.
+ * 
+ * @throws exit(), if cursor invisiblity fails.
+ */
 void init_globe() {
   initscr();       // initialize ncurses
   cbreak();        // disable line buffering
@@ -20,7 +24,10 @@ void init_globe() {
 }
 
 
-
+/**
+ * Undo all the changes/modification made by NCurses.
+ * Also make the cursor visiable.
+ */
 void destroy_globe() {
   curs_set(1);     // make cursor visible
 
@@ -31,7 +38,11 @@ void destroy_globe() {
 }
 
 
-
+/**
+ * Calls the cleanup function and prints the error.
+ * 
+ * @param *err (string) -> Containing the error message to be printed
+ */
 void throw_error_nd_exit(char *err) {
   destroy_globe();
   puts(err);
@@ -39,27 +50,35 @@ void throw_error_nd_exit(char *err) {
 }
 
 
-
+/**
+ * To print the characters from file to the screen.
+ * 
+ * @param *win (WINDOW *) -> newly created window of ncurses
+ * @param *file_data (string) -> data read from the file (GLOBE_FILE)
+ */
 void render_globe(WINDOW *win, char *file_data) {
   for (int i = 0; i < strlen(file_data); i++)
     waddch(win, file_data[i]);
-  
-  refresh();
 }
 
 
-
+/**
+ * Generate a new window for adding snow and the globe
+ * 
+ * @return (WINDOW *) reference to the newly created window.
+ */
 WINDOW* generate_snow_window() {
   WINDOW *s_win = newwin(MAX_HEIGHT, MAX_WIDTH, 0, 0);
-
-  // draw a border around the window
-  box(s_win, 0, 0);
 
   return s_win;
 }
 
 
-
+/**
+ * Based on the snow density, generate snow_particle struct to act as snow.
+ * 
+ * @return (snows **) Array of pointers which refer to snow_particle struct
+ */
 snow_particle** generate_snow() {
   // array of snow struct references (array of pointers)
   snow_particle **snows = malloc(SNOW_DENSITY * sizeof(snow_particle *));
@@ -72,7 +91,6 @@ snow_particle** generate_snow() {
     snows[snow] = malloc(sizeof(snow_particle));
     if (snows[snow] == NULL)
       throw_error_nd_exit("Memory allocation failed for a Snow struct");
-    
     
     // calculate no of character used as snow particles
     int particles_cnt = sizeof(PARTICLES) / sizeof(PARTICLES[0]);
@@ -87,7 +105,12 @@ snow_particle** generate_snow() {
 }
 
 
-
+/**
+ * To print the characters from struct (snow_particles)
+ * 
+ * @param *win (WINDOW *) -> reference to newly created window of ncurses
+ * @param **snows (array of pointers) -> each snow particle representation.
+ */
 void render_snow(WINDOW *win, snow_particle **snows) {
   for (int snow = 0; snow < SNOW_DENSITY; snow++) {
     mvwaddch(
@@ -100,7 +123,12 @@ void render_snow(WINDOW *win, snow_particle **snows) {
 }
 
 
-
+/**
+ * Increments the y position of snow particles on each iteration based
+ * on the speed value. This gives the effect of falling.
+ * 
+ * @param **snows (array of references to snow_particle struct)
+ */
 void update_snow(snow_particle **snows) {
   for (int snow = 0; snow < SNOW_DENSITY; snow++) {
     // update the positon of y by incrementing the speed
@@ -116,7 +144,14 @@ void update_snow(snow_particle **snows) {
 }
 
 
-
+/**
+ * Calculates the size of array to be allocated to hold the globe text file.
+ * 
+ * @param *fptr (FILE *) -> file pointer reference to globe file.
+ * @param bytes_per_element (size_t) size of each character in text file.
+ * 
+ * @return (size_t) size of the array needed
+ */
 size_t calculate_file_size(FILE *fptr, size_t bytes_per_element) {
   // move to the end of the file
   fseek(fptr, 0, SEEK_END);
@@ -131,7 +166,11 @@ size_t calculate_file_size(FILE *fptr, size_t bytes_per_element) {
 }
 
 
-
+/**
+ * Reads the content of the globe.txt file and copy it to an char array.
+ * 
+ * @return (char *) character array containing copy of the file.
+ */
 char* read_file() {
   FILE *fptr;
   if ( !(fptr = fopen(GLOBE_FILE, "r")) ) 

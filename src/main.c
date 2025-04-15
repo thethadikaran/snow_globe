@@ -30,7 +30,8 @@ int main() {
 
     wrefresh(snow_win);
 
-    napms(190);
+    // suspends the execution for WAIT_TIME milli-seconds
+    napms(WAIT_TIME);     
   }
 
   delwin(snow_win);

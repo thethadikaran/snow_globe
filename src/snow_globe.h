@@ -10,6 +10,7 @@
 
 #define GLOBE_FILE   "../resource/globe.txt"
 
+#define WAIT_TIME       190      // time in milli seconds
 #define MAX_HEIGHT      25
 #define MAX_WIDTH       73
 #define SNOW_DENSITY    75      // no of snow particles to render
