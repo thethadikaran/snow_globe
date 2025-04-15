@@ -1,10 +1,18 @@
+/**
+ * @Name: snow_globe
+ * @Author: thethadikaran
+ * @Date: 2025/04/15
+ * @Repository: https://github.com/thethadikaran/snow_globe
+ */
+
+
 #include "snow_globe.h"
 
 char PARTICLES[] = {'.', '`', '\'', '*', '+', '\"', ',', ';', ':'};
 
 
 /**
- * Initializes the NCurses & modify certain features of terminal.
+ * @brief the NCurses & modify certain features of terminal.
  * 
  * @throws exit(), if cursor invisiblity fails.
  */
@@ -25,7 +33,7 @@ void init_globe() {
 
 
 /**
- * Undo all the changes/modification made by NCurses.
+ * @brief Undo all the changes/modification made by NCurses.
  * Also make the cursor visiable.
  */
 void destroy_globe() {
@@ -39,7 +47,7 @@ void destroy_globe() {
 
 
 /**
- * Calls the cleanup function and prints the error.
+ * @brief Calls the cleanup function and prints the error.
  * 
  * @param *err (string) -> Containing the error message to be printed
  */
@@ -51,7 +59,7 @@ void throw_error_nd_exit(char *err) {
 
 
 /**
- * To print the characters from file to the screen.
+ * @brief To print the characters from file to the screen.
  * 
  * @param *win (WINDOW *) -> newly created window of ncurses
  * @param *file_data (string) -> data read from the file (GLOBE_FILE)
@@ -63,7 +71,7 @@ void render_globe(WINDOW *win, char *file_data) {
 
 
 /**
- * Generate a new window for adding snow and the globe
+ * @brief Generate a new window for adding snow and the globe
  * 
  * @return (WINDOW *) reference to the newly created window.
  */
@@ -75,7 +83,7 @@ WINDOW* generate_snow_window() {
 
 
 /**
- * Based on the snow density, generate snow_particle struct to act as snow.
+ * @brief Based on the snow density, generate snow_particle struct to act as snow.
  * 
  * @return (snows **) Array of pointers which refer to snow_particle struct
  */
@@ -106,7 +114,7 @@ snow_particle** generate_snow() {
 
 
 /**
- * To print the characters from struct (snow_particles)
+ * @brief To print the characters from struct (snow_particles)
  * 
  * @param *win (WINDOW *) -> reference to newly created window of ncurses
  * @param **snows (array of pointers) -> each snow particle representation.
@@ -124,7 +132,7 @@ void render_snow(WINDOW *win, snow_particle **snows) {
 
 
 /**
- * Increments the y position of snow particles on each iteration based
+ * @brief Increments the y position of snow particles on each iteration based
  * on the speed value. This gives the effect of falling.
  * 
  * @param **snows (array of references to snow_particle struct)
@@ -145,7 +153,7 @@ void update_snow(snow_particle **snows) {
 
 
 /**
- * Calculates the size of array to be allocated to hold the globe text file.
+ * @brief Calculates the size of array to be allocated to hold the globe text file.
  * 
  * @param *fptr (FILE *) -> file pointer reference to globe file.
  * @param bytes_per_element (size_t) size of each character in text file.
@@ -167,7 +175,7 @@ size_t calculate_file_size(FILE *fptr, size_t bytes_per_element) {
 
 
 /**
- * Reads the content of the globe.txt file and copy it to an char array.
+ * @brief Reads the content of the globe.txt file and copy it to an char array.
  * 
  * @return (char *) character array containing copy of the file.
  */
