@@ -15,3 +15,23 @@
 ![screencast](resource/screen_cast.gif)
 
 
+<h6>BUILD & RUN</h6>
+
+```bash
+# PRE-REQUISITE - install NCurses library
+# for MSYS2 terminal in Windows
+pacman -S mingw-w64-x86_64-ncurses     
+
+# for debian based systems
+sudo apt-get install libncurses5-dev libncursesw5-dev     
+
+# for fedora based systems
+sudo dnf install ncurses-devel     
+
+# BUILD - using cmake, build the files
+cd snow_globe; mkdir build; cd build
+cmake ..
+
+# RUN
+./snow_globe
+```
